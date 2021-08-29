@@ -1,6 +1,7 @@
 package hr.xmjosic.restfulwebservice.helloworld.controller;
 
 import hr.xmjosic.restfulwebservice.helloworld.HelloWorld;
+import hr.xmjosic.restfulwebservice.helloworld.configuration.ApplicationProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class HelloWorldController {
 
     @Autowired private MessageSource messageSource;
+    @Autowired private ApplicationProperties applicationProperties;
 
     /**
      * @return Hello world message.
@@ -37,5 +39,13 @@ public class HelloWorldController {
     @GetMapping("/path-variable/{name}")
     public ResponseEntity<HelloWorld> helloWorldModel(@PathVariable String name) {
         return ResponseEntity.ok(new HelloWorld(name));
+    }
+
+    /**
+     * @return Returns message from properties file.
+     */
+    @GetMapping("/message")
+    public ResponseEntity<Map<String, String>> helloWorldPropertySource2() {
+        return ResponseEntity.ok(Collections.singletonMap("message", this.applicationProperties.getGreetingMessage()));
     }
 }
